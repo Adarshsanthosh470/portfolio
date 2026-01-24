@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence, useSpring, useTransform, useMotionValue } from "framer-motion";
+import { motion, AnimatePresence, useSpring, useTransform, useMotionValue, MotionValue } from "framer-motion";
 
 // --- COMPONENTS ---
 import Hero from "@/components/Hero/Hero";
@@ -15,8 +15,20 @@ import Footer from "@/components/Footer/Footer";
 import About from "@/components/About/About";
 import ZenithBot from "@/components/ZenithBot";
 
-// --- 1. HYPER-SENSITIVE INDEPENDENT EYE COMPONENT ---
-const IndividualEye = ({ mouseX, mouseY, stiffness, damping }) => {
+// --- 1. TYPES & INTERFACES ---
+interface IndividualEyeProps {
+  mouseX: MotionValue<number>;
+  mouseY: MotionValue<number>;
+  stiffness: number;
+  damping: number;
+}
+
+interface LoadingScreenProps {
+  onLoaded: () => void;
+}
+
+// --- 2. HYPER-SENSITIVE INDEPENDENT EYE COMPONENT ---
+const IndividualEye = ({ mouseX, mouseY, stiffness, damping }: IndividualEyeProps) => {
   const eyeRef = useRef<HTMLDivElement>(null);
   const springX = useSpring(mouseX, { stiffness, damping });
   const springY = useSpring(mouseY, { stiffness, damping });
@@ -55,7 +67,7 @@ const IndividualEye = ({ mouseX, mouseY, stiffness, damping }) => {
   );
 };
 
-// --- 2. LANDING BIG EYES SECTION ---
+// --- 3. LANDING BIG EYES SECTION ---
 const RoboticEyesHero = () => {
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
@@ -93,7 +105,7 @@ const RoboticEyesHero = () => {
   );
 };
 
-// --- 3. MAIN PAGE ---
+// --- 4. MAIN PAGE ---
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
   const [stage, setStage] = useState(0); 
@@ -141,7 +153,13 @@ export default function Home() {
         )}
       </AnimatePresence>
 
-      <ZenithBot stage={stage} hoveredProject={hoveredProject} hoveredDockIcon={hoveredDockIcon} isProjectClicked={isProjectClicked} isCertificateClicked={isCertificateClicked} />
+      <ZenithBot 
+        stage={stage} 
+        hoveredProject={hoveredProject} 
+        hoveredDockIcon={hoveredDockIcon} 
+        isProjectClicked={isProjectClicked} 
+        isCertificateClicked={isCertificateClicked} 
+      />
 
       {!isLoading && (
         <motion.main initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex flex-col items-center w-full">
