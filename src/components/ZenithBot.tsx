@@ -1,13 +1,40 @@
 "use client";
 
-import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from "framer-motion";
+import { motion, useMotionValue, useSpring, useTransform, AnimatePresence, MotionValue } from "framer-motion";
 import { useState, useEffect, useRef } from "react";
 import { CheckCircle2 } from "lucide-react";
 
-// --- 1. ROBOT MOUTH COMPONENT ---
-const RobotMouth = ({ stage, isIdle, isScanning, isHoveringProject, hoveredDockIcon }) => {
+// --- 1. INTERFACES ---
+interface RobotMouthProps {
+  stage: number;
+  isIdle: boolean;
+  isScanning: boolean;
+  isHoveringProject: boolean;
+  hoveredDockIcon: boolean;
+}
+
+interface IndividualEyeProps {
+  mouseX: MotionValue<number>;
+  mouseY: MotionValue<number>;
+  stiffness: number;
+  damping: number;
+  isIdle: boolean;
+  isBlinking: boolean;
+  isScanning: boolean;
+}
+
+interface ZenithBotProps {
+  stage: number;
+  hoveredProject?: string;
+  isProjectClicked?: boolean;
+  isCertificateClicked?: boolean;
+  hoveredDockIcon?: string;
+}
+
+// --- 2. ROBOT MOUTH COMPONENT ---
+const RobotMouth = ({ stage, isIdle, isScanning, isHoveringProject, hoveredDockIcon }: RobotMouthProps) => {
   const getMouthPath = () => {
-    if (isIdle) return "M 5 10 L 45 10";
+    if (isIdle) return "M 5 10 L 45 10"; 
     
     if (isScanning || stage === 4 || isHoveringProject || hoveredDockIcon) {
       return "M 20 10 A 5 5 0 1 1 30 10 A 5 5 0 1 1 20 10"; 
@@ -17,7 +44,7 @@ const RobotMouth = ({ stage, isIdle, isScanning, isHoveringProject, hoveredDockI
       return "M 10 5 Q 25 15 40 5"; 
     }
 
-    return "M 10 10 L 40 10";
+    return "M 10 10 L 40 10"; 
   };
 
   return (
@@ -37,8 +64,8 @@ const RobotMouth = ({ stage, isIdle, isScanning, isHoveringProject, hoveredDockI
   );
 };
 
-// --- 2. INDEPENDENT EYE COMPONENT ---
-const IndividualEye = ({ mouseX, mouseY, stiffness, damping, isIdle, isBlinking, isScanning }) => {
+// --- 3. INDEPENDENT EYE COMPONENT ---
+const IndividualEye = ({ mouseX, mouseY, stiffness, damping, isIdle, isBlinking, isScanning }: IndividualEyeProps) => {
   const eyeRef = useRef<HTMLDivElement>(null);
   const springX = useSpring(mouseX, { stiffness, damping });
   const springY = useSpring(mouseY, { stiffness, damping });
@@ -72,8 +99,8 @@ const IndividualEye = ({ mouseX, mouseY, stiffness, damping, isIdle, isBlinking,
   );
 };
 
-// --- 3. MAIN ZENITH-BOT COMPONENT ---
-const ZenithBot = ({ stage, hoveredProject, isProjectClicked, isCertificateClicked, hoveredDockIcon }) => {
+// --- 4. MAIN ZENITH-BOT COMPONENT ---
+const ZenithBot = ({ stage, hoveredProject, isProjectClicked, isCertificateClicked, hoveredDockIcon }: ZenithBotProps) => {
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
   const [isIdle, setIsIdle] = useState(false);
@@ -94,7 +121,10 @@ const ZenithBot = ({ stage, hoveredProject, isProjectClicked, isCertificateClick
     };
     window.addEventListener("mousemove", handleMove);
     window.addEventListener("touchmove", handleMove);
-    return () => { window.removeEventListener("mousemove", handleMove); window.removeEventListener("touchmove", handleMove); };
+    return () => {
+      window.removeEventListener("mousemove", handleMove);
+      window.removeEventListener("touchmove", handleMove);
+    };
   }, [mouseX, mouseY]);
 
   useEffect(() => {
@@ -163,7 +193,6 @@ const ZenithBot = ({ stage, hoveredProject, isProjectClicked, isCertificateClick
         exit={{ opacity: 0, x: 50 }}
         className="fixed z-[60] bottom-24 right-8 pointer-events-none flex flex-col items-center gap-4"
       >
-        {/* STABLE DIALOGUE: Only uses the gentle float, no jitter */}
         <motion.div 
           animate={{ y: [0, -10, 0] }}
           transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
@@ -179,7 +208,6 @@ const ZenithBot = ({ stage, hoveredProject, isProjectClicked, isCertificateClick
           )}
         </motion.div>
         
-        {/* EXCITED ROBOT FACE: Applies jitter only to the head container */}
         <motion.div 
           animate={{ 
             y: isExcited ? [0, -10, 0, -10, 0] : [0, -15, 0],
