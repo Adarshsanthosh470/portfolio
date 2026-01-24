@@ -5,7 +5,12 @@ import { useState } from "react";
 import ProjectModal from "./ProjectModal";
 import { projects } from "./projects";
 
-const ProjectsGrid = ({ onProjectHover }) => {
+// --- ADDED INTERFACE FOR TYPESCRIPT COMPLIANCE ---
+interface ProjectsGridProps {
+  onProjectHover: (title: string) => void;
+}
+
+const ProjectsGrid = ({ onProjectHover }: ProjectsGridProps) => {
   const [selectedProject, setSelectedProject] = useState<typeof projects[0] | null>(null);
 
   return (
