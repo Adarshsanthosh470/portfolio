@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import Script from "next/script"; // Import the Script component
+import PageTransition from "@/components/PageTransition";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -37,7 +38,7 @@ export default function RootLayout({
             gtag('config', 'G-V3G5DX0Y8T');
           `}
         </Script>
-        {children}
+        <PageTransition>{children}</PageTransition>
       </body>
     </html>
   );

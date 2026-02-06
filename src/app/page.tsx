@@ -74,8 +74,8 @@ const RoboticEyesHero = () => {
   const [introText, setIntroText] = useState("");
 
   useEffect(() => {
-    const t1 = setTimeout(() => setIntroText("OS loading... polishing my cyan sensors... fixed!"), 500);
-    const t2 = setTimeout(() => setIntroText("Oh, hello there! HI!, I am the personal guide robot for you! Let me show you what Adarsh has been building."), 2500);
+    const t1 = setTimeout(() => setIntroText("Scanning your mouse movements... Nice precision!!!"), 500);
+    const t2 = setTimeout(() => setIntroText("Oh, HI!, I will assist you to explore the portfolio! Let me show you what Adarsh has been building... scroll down to explore more!."), 2500);
 
     const handleMove = (e: MouseEvent) => {
       mouseX.set(e.clientX - window.innerWidth / 2);
