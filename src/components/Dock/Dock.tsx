@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useMotionValue, useSpring, useTransform, MotionValue } from "framer-motion";
-import { Home, Briefcase, GitMerge, Mail } from "lucide-react";
+import { Home, Briefcase, GitMerge, Mail, Star } from "lucide-react";
 import { useRef } from "react";
 
 // --- 1. DEFINE TYPES --- 
@@ -23,6 +23,7 @@ const icons = [
   { name: "Home", icon: <Home />, action: "scroll", target: "#hero" },
   { name: "Projects", icon: <Briefcase />, action: "scroll", target: "#projects" },
   { name: "Education", icon: <GitMerge />, action: "scroll", target: "#education" },
+  { name: "Rating", icon: <Star />, action: "scroll", target: "#rating" },
   { name: "Contact", icon: <Mail />, action: "scroll", target: "#contact" },
 ];
 

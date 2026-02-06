@@ -11,6 +11,7 @@ import Timeline from "@/components/Journey/Timeline";
 import TechnicalTraining from "@/components/Journey/TechnicalTraining";
 import Dock from "@/components/Dock/Dock";
 import Contact from "@/components/Contact/Contact";
+import RatingForm from "@/components/RatingForm/RatingForm";
 import Footer from "@/components/Footer/Footer";
 import About from "@/components/About/About";
 import ZenithBot from "@/components/ZenithBot";
@@ -171,6 +172,7 @@ export default function Home() {
           <div id="journey" className="mt-16 w-full"><Timeline /></div>
           <div id="education" className="mt-16 w-full" onClick={() => setIsCertificateClicked(true)}><TechnicalTraining /></div>
           <div id="contact" className="mt-16 w-full"><Contact /></div>
+          <div id="rating" className="mt-16 w-full"><RatingForm /></div>
           <div className="mt-16 pb-28 w-full"><Footer /></div>
           <Dock onHoverIcon={setHoveredDockIcon} />
         </motion.main>
