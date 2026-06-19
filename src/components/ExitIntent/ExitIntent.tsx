@@ -76,37 +76,25 @@ const ExitIntent = () => {
       const scriptUrl = process.env.NEXT_PUBLIC_GOOGLE_SCRIPT_URL;
 
       if (!scriptUrl) {
-        // Fallback: Post to Formspree if Google Sheets script is not configured
-        const formData = new FormData();
-        formData.append('name', name.trim());
-        formData.append('rating', rating.toString());
-        formData.append('review', reviewText.trim());
+        throw new Error('Google Sheet script URL is not configured.');
+      }
 
-        const response = await fetch('https://formspree.io/f/mdalonqq', {
-          method: 'POST',
-          body: formData,
-          headers: { 'Accept': 'application/json' }
-        });
+      // Primary: Post to Google Sheet Web App
+      const response = await fetch(scriptUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'text/plain;charset=utf-8'
+        },
+        body: JSON.stringify({
+          name: name.trim(),
+          rating: rating,
+          review: reviewText.trim()
+        })
+      });
 
-        if (!response.ok) throw new Error('Formspree submission failed');
-      } else {
-        // Primary: Post to Google Sheet Web App
-        const response = await fetch(scriptUrl, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'text/plain;charset=utf-8'
-          },
-          body: JSON.stringify({
-            name: name.trim(),
-            rating: rating,
-            review: reviewText.trim()
-          })
-        });
-
-        const resData = await response.json();
-        if (resData.status !== 'success') {
-          throw new Error(resData.message || 'Google Sheets submission failed');
-        }
+      const resData = await response.json();
+      if (resData.status !== 'success') {
+        throw new Error(resData.message || 'Google Sheets submission failed');
       }
 
       localStorage.setItem('portfolio_review_done', 'true');

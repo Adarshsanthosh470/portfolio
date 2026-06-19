@@ -63,38 +63,26 @@ const RatingForm = () => {
       const scriptUrl = process.env.NEXT_PUBLIC_GOOGLE_SCRIPT_URL;
 
       if (!scriptUrl) {
-        // Fallback: If Google Script URL is not set yet, submit to Formspree
-        const formData = new FormData();
-        formData.append('name', name.trim());
-        formData.append('rating', rating.toString());
-        formData.append('review', reviewText.trim());
+        throw new Error('Google Sheet script URL is not configured.');
+      }
 
-        const response = await fetch('https://formspree.io/f/mdalonqq', {
-          method: 'POST',
-          body: formData,
-          headers: { 'Accept': 'application/json' }
-        });
+      // Submit directly to Google Sheets Web App
+      // We use text/plain to prevent CORS preflight requests from failing on Google Apps Script
+      const response = await fetch(scriptUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'text/plain;charset=utf-8'
+        },
+        body: JSON.stringify({
+          name: name.trim(),
+          rating: rating,
+          review: reviewText.trim()
+        })
+      });
 
-        if (!response.ok) throw new Error('Formspree submission failed');
-      } else {
-        // Primary: Submit directly to Google Sheets Web App
-        // We use text/plain to prevent CORS preflight requests from failing on Google Apps Script
-        const response = await fetch(scriptUrl, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'text/plain;charset=utf-8'
-          },
-          body: JSON.stringify({
-            name: name.trim(),
-            rating: rating,
-            review: reviewText.trim()
-          })
-        });
-
-        const resData = await response.json();
-        if (resData.status !== 'success') {
-          throw new Error(resData.message || 'Google Sheets submission failed');
-        }
+      const resData = await response.json();
+      if (resData.status !== 'success') {
+        throw new Error(resData.message || 'Google Sheets submission failed');
       }
 
       setSuccessMessage(true);
@@ -245,7 +233,6 @@ const RatingForm = () => {
                 className="bg-green-500/10 border border-green-500/30 text-green-400 px-4 py-3.5 rounded-xl text-sm font-medium text-center"
               >
                 ✨ Thank you! Your review has been submitted successfully.
-                {!process.env.NEXT_PUBLIC_GOOGLE_SCRIPT_URL && " (Emailed via backup connection)"}
               </motion.div>
             )}
 
