@@ -12,10 +12,11 @@ import TechnicalTraining from "@/components/Journey/TechnicalTraining";
 import Dock from "@/components/Dock/Dock";
 import Contact from "@/components/Contact/Contact";
 import RatingForm from "@/components/RatingForm/RatingForm";
+import Testimonials from "@/components/Testimonials/Testimonials";
+import ExitIntent from "@/components/ExitIntent/ExitIntent";
 import Footer from "@/components/Footer/Footer";
 import About from "@/components/About/About";
 import ZenithBot from "@/components/ZenithBot";
-import TransformationalIntro from "@/components/IntroVideo/TransformationalIntro";
 
 // --- MOUSE MOVING TRANSITION (Custom Magnetic Cursor) ---
 const GlowingCursor = () => {
@@ -25,7 +26,7 @@ const GlowingCursor = () => {
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       setMousePosition({ x: e.clientX, y: e.clientY });
-      
+
       // Detect if hover over a clickable element to morph cursor
       const target = e.target as HTMLElement;
       setIsHovering(!!target.closest('a, button, [role="button"], input, textarea, .magnetic-target'));
@@ -80,8 +81,7 @@ const ScrollReveal = ({ children, delay = 0 }: { children: React.ReactNode, dela
 // --- MAIN PAGE ---
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
-  const [isIntroComplete, setIsIntroComplete] = useState(false);
-  const [stage, setStage] = useState(0); 
+  const [stage, setStage] = useState(0);
   const [hoveredProject, setHoveredProject] = useState('');
   const [hoveredDockIcon, setHoveredDockIcon] = useState('');
   const [isProjectClicked, setIsProjectClicked] = useState(false);
@@ -94,9 +94,9 @@ export default function Home() {
   useEffect(() => {
     if (isLoading) return;
     const sections = [
-      { id: 'hero', stage: 2 }, { id: 'about', stage: 3 }, 
+      { id: 'hero', stage: 2 }, { id: 'about', stage: 3 },
       { id: 'projects', stage: 4 }, { id: 'contact', stage: 5 },
-      { id: 'skills', stage: 6 }, { id: 'journey', stage: 7 }, 
+      { id: 'skills', stage: 6 }, { id: 'journey', stage: 7 },
       { id: 'education', stage: 8 }
     ];
     const observers = sections.map(sec => {
@@ -116,6 +116,7 @@ export default function Home() {
     <div className="bg-[#050505] min-h-screen text-white/90 selection:bg-[#00f2ff]/30 selection:text-white cursor-none">
       {/* Activate the Mouse Magnetic Glow globally */}
       <GlowingCursor />
+      <ExitIntent />
 
       <AnimatePresence mode="wait">
         {isLoading && (
@@ -129,46 +130,45 @@ export default function Home() {
         )}
       </AnimatePresence>
 
-      <ZenithBot 
-        stage={stage} 
-        hoveredProject={hoveredProject} 
-        hoveredDockIcon={hoveredDockIcon} 
-        isProjectClicked={isProjectClicked} 
-        isCertificateClicked={isCertificateClicked} 
+      <ZenithBot
+        stage={stage}
+        hoveredProject={hoveredProject}
+        hoveredDockIcon={hoveredDockIcon}
+        isProjectClicked={isProjectClicked}
+        isCertificateClicked={isCertificateClicked}
       />
 
-      {(!isLoading && !isIntroComplete) && (
-        <TransformationalIntro onComplete={() => setIsIntroComplete(true)} />
-      )}
-
-      {(!isLoading && isIntroComplete) && (
+      {!isLoading && (
         <motion.main initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex flex-col items-center w-full">
           <div id="hero" onClick={() => setIsProjectClicked(true)} className="w-full">
-             <ScrollReveal delay={0.2}><Hero /></ScrollReveal>
+            <ScrollReveal delay={0.2}><Hero /></ScrollReveal>
           </div>
           <div id="about" className="mt-16 w-full">
-             <ScrollReveal><About /></ScrollReveal>
+            <ScrollReveal><About /></ScrollReveal>
           </div>
           <div id="projects" className="mt-16 w-full" onClick={() => setIsProjectClicked(true)}>
-             <ScrollReveal><ProjectsGrid onProjectHover={setHoveredProject} /></ScrollReveal>
+            <ScrollReveal><ProjectsGrid onProjectHover={setHoveredProject} /></ScrollReveal>
           </div>
           <div id="skills" className="mt-16 w-full">
-             <ScrollReveal><Skills /></ScrollReveal>
+            <ScrollReveal><Skills /></ScrollReveal>
           </div>
           <div id="journey" className="mt-16 w-full">
-             <ScrollReveal><Timeline /></ScrollReveal>
+            <ScrollReveal><Timeline /></ScrollReveal>
           </div>
           <div id="education" className="mt-16 w-full" onClick={() => setIsCertificateClicked(true)}>
-             <ScrollReveal><TechnicalTraining /></ScrollReveal>
+            <ScrollReveal><TechnicalTraining /></ScrollReveal>
           </div>
           <div id="contact" className="mt-16 w-full mb-16">
-             <ScrollReveal><Contact /></ScrollReveal>
+            <ScrollReveal><Contact /></ScrollReveal>
           </div>
-          <div id="rating" className="mt-28 w-full">
-             <ScrollReveal><RatingForm /></ScrollReveal>
+          <div className="mt-28 w-full">
+            <ScrollReveal><Testimonials /></ScrollReveal>
+          </div>
+          <div id="rating" className="mt-16 w-full">
+            <ScrollReveal><RatingForm /></ScrollReveal>
           </div>
           <div className="mt-16 pb-28 w-full"><Footer /></div>
-          
+
           <Dock onHoverIcon={setHoveredDockIcon} />
         </motion.main>
       )}
