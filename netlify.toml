@@ -2,5 +2,8 @@
   command = "npm run build"
   publish = ".next"
 
+[build.environment]
+  NEXT_PUBLIC_GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyI0Zq8cp-CnXztpnRYzxIbm2DDkzrb-T3O0XaV0XPCFJlcdU54TQvyK2Z-HtlK9w7o/exec"
+
 [[plugins]]
   package = "@netlify/plugin-nextjs"
