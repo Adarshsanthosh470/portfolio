@@ -121,14 +121,12 @@ const ZenithBot = ({ stage, hoveredProject, isProjectClicked, isCertificateClick
     const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
     const now = audioContext.currentTime;
     
-    // Create oscillator for a fun voice-like sound
     const osc = audioContext.createOscillator();
     const gain = audioContext.createGain();
     
     osc.connect(gain);
     gain.connect(audioContext.destination);
     
-    // Simulate speech pattern with frequency changes
     gain.gain.setValueAtTime(0.3, now);
     osc.frequency.setValueAtTime(400, now);
     osc.frequency.setValueAtTime(450, now + 0.1);
@@ -145,7 +143,6 @@ const ZenithBot = ({ stage, hoveredProject, isProjectClicked, isCertificateClick
     const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
     const now = audioContext.currentTime;
     
-    // Create multiple oscillators for a fun laughing sound
     for (let i = 0; i < 3; i++) {
       const osc = audioContext.createOscillator();
       const gain = audioContext.createGain();
@@ -173,7 +170,7 @@ const ZenithBot = ({ stage, hoveredProject, isProjectClicked, isCertificateClick
     
     switch (stage) {
       case 2: return "Scanning Portfolio... 🤖";
-      case 3: return "Software Engineer Grad (2026)! ✨";
+      case 3: return "Software Engineer Graduated (2026)! ✨";
       case 4: return hoveredProject ? `Ooh! ${hoveredProject} looks cool!` : "Look at these amazing builds!";
       case 5: return "Hire Adarsh? Let's chat! 💌";
       case 6: return "Wow! Look at all these skills!";
@@ -195,19 +192,19 @@ const ZenithBot = ({ stage, hoveredProject, isProjectClicked, isCertificateClick
       >
         {/* Dialogue Bubble */}
         <motion.div className="relative">
-            <motion.div className="bg-white border-2 border-cyan-400 text-zinc-800 px-4 py-2 rounded-2xl rounded-br-none text-[11px] font-bold shadow-xl mb-1 min-w-[140px] text-center">
+          <motion.div className="bg-white border-2 border-cyan-400 text-zinc-800 px-4 py-2 rounded-2xl rounded-br-none text-[11px] font-bold shadow-xl mb-1 min-w-[140px] text-center">
             {getDialogue()}
+          </motion.div>
+          {showBadge && (
+            <motion.div 
+              initial={{ scale: 0, rotate: -20 }}
+              animate={{ scale: 1, rotate: 0 }}
+              className="absolute -right-4 -top-2 text-cyan-500 bg-white rounded-full p-0.5 shadow-lg border border-cyan-100"
+            >
+              <CheckCircle2 size={22} fill="currentColor" className="text-white" />
+              <div className="absolute inset-0 text-cyan-500"><CheckCircle2 size={22} /></div>
             </motion.div>
-            {showBadge && (
-                <motion.div 
-                    initial={{ scale: 0, rotate: -20 }}
-                    animate={{ scale: 1, rotate: 0 }}
-                    className="absolute -right-4 -top-2 text-cyan-500 bg-white rounded-full p-0.5 shadow-lg border border-cyan-100"
-                >
-                    <CheckCircle2 size={22} fill="currentColor" className="text-white" />
-                    <div className="absolute inset-0 text-cyan-500"><CheckCircle2 size={22} /></div>
-                </motion.div>
-            )}
+          )}
         </motion.div>
 
         {/* CUTE ROBOT BODY */}
@@ -218,13 +215,13 @@ const ZenithBot = ({ stage, hoveredProject, isProjectClicked, isCertificateClick
           }}
           transition={{ 
             duration: isTickled ? 0.5 : 3, 
-            repeat: isTickled ? Infinity : Infinity, 
+            repeat: Infinity, 
             ease: "easeInOut" 
           }}
           className="relative cursor-pointer hover:scale-105 transition-transform"
           onClick={handleRobotClick}
         >
-          {/* EXCITEMENT GLITTER (Intensified for Contact Section) */}
+          {/* EXCITEMENT GLITTER */}
           {(isInContact || verified) && (
             <div className="absolute -inset-16 flex items-center justify-center">
               {[...Array(8)].map((_, i) => (
@@ -258,14 +255,14 @@ const ZenithBot = ({ stage, hoveredProject, isProjectClicked, isCertificateClick
 
             {/* Face Screen */}
             <div className="relative z-10 w-[82%] h-[42%] bg-zinc-900 rounded-2xl flex flex-col items-center justify-center">
-                <div className="flex gap-4 mb-1">
-                {/* DOUBLE BLINK SYSTEM: Continuous rapid blink when tickled */}
+              <div className="flex gap-4 mb-1">
+                {/* DOUBLE BLINK SYSTEM */}
                 <motion.div 
                   style={{ x: eyeX, y: eyeY }} 
                   animate={{ scaleY: isTickled ? [1, 0.1, 1, 0.1, 1, 0.1, 1] : [1, 1, 0.1, 1, 0.1, 1, 1] }}
                   transition={{ 
                     duration: isTickled ? 0.6 : 2.5,
-                    repeat: isTickled ? Infinity : Infinity,
+                    repeat: Infinity,
                     times: isTickled ? [0, 0.15, 0.3, 0.45, 0.6, 0.75, 1] : [0, 0.7, 0.75, 0.8, 0.85, 0.9, 1]
                   }}
                   className="w-4 h-6 bg-cyan-400 rounded-full shadow-[0_0_12px_#00f2ff]" 
@@ -275,22 +272,22 @@ const ZenithBot = ({ stage, hoveredProject, isProjectClicked, isCertificateClick
                   animate={{ scaleY: isTickled ? [1, 0.1, 1, 0.1, 1, 0.1, 1] : [1, 1, 0.1, 1, 0.1, 1, 1] }}
                   transition={{ 
                     duration: isTickled ? 0.6 : 2.5,
-                    repeat: isTickled ? Infinity : Infinity,
+                    repeat: Infinity,
                     times: isTickled ? [0, 0.15, 0.3, 0.45, 0.6, 0.75, 1] : [0, 0.7, 0.75, 0.8, 0.85, 0.9, 1]
                   }}
                   className="w-4 h-6 bg-cyan-400 rounded-full shadow-[0_0_12px_#00f2ff]" 
                 />
-                </div>
-                <CuteMouth stage={stage} isIdle={isIdle} inspecting={inspecting} isTickled={isTickled} />
+              </div>
+              <CuteMouth stage={stage} isIdle={isIdle} inspecting={inspecting} isTickled={isTickled} />
             </div>
 
             {/* Power Meter */}
             <div className="mt-4 w-8 h-1.5 bg-zinc-100 rounded-full overflow-hidden">
-               <motion.div 
+              <motion.div 
                 animate={{ x: ["-100%", "100%"] }} 
                 transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
                 className="w-1/2 h-full bg-cyan-400 shadow-[0_0_8px_#00f2ff]" 
-               />
+              />
             </div>
           </div>
 

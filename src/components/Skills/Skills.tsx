@@ -7,14 +7,15 @@ const skillCategories = [
   {
     title: "Development", // Added missing title
     skills: [
-      "Kotlin", 
+      "Python",
+      "mysql",
+      "C++",
+      "HTML",
+      "CSS",
+      "JavaScript", 
       "Jetpack Compose", 
       "Flutter", 
-      "Dart", 
-      "React Native",
-      "HTML", 
-      "CSS", 
-      "JavaScript", 
+      "React Native", 
       "Java",
       "TypeScript", // Corrected casing
       "Supabase",   // Consistent casing
@@ -32,7 +33,8 @@ const skillCategories = [
       
       "Android Studio",
       "VS Code",
-      "Google Colab"
+      "Google Colab",
+      "Antigravity"
     ],
   },
 ];
