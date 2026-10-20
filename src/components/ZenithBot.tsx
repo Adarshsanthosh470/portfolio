@@ -56,7 +56,7 @@ const SpideyHanging = ({ stage, isProjectClicked, isCertificateClicked }: Spidey
 
   // Eye Blink Logic
   useEffect(() => {
-    let blinkInterval: NodeJS.Timeout;
+    let blinkInterval: NodeJS.Timeout | undefined = undefined;
 
     const performBlink = () => {
       setCurrentEyeImage(EyeClosedImage);
@@ -71,16 +71,18 @@ const SpideyHanging = ({ stage, isProjectClicked, isCertificateClicked }: Spidey
     };
 
     if (isIdle) {
-       clearInterval(blinkInterval);
+       if (blinkInterval) clearInterval(blinkInterval);
        setCurrentEyeImage(EyeClosedImage); 
     } else if (isTickled) {
-       clearInterval(blinkInterval);
+       if (blinkInterval) clearInterval(blinkInterval);
        blinkInterval = setInterval(performBlink, 300);
     } else {
        startBlinking();
     }
 
-    return () => clearInterval(blinkInterval);
+    return () => {
+      if (blinkInterval) clearInterval(blinkInterval);
+    };
   }, [isIdle, isTickled]);
 
   const handleRobotClick = () => {
@@ -93,16 +95,12 @@ const SpideyHanging = ({ stage, isProjectClicked, isCertificateClicked }: Spidey
 
   return (
     <AnimatePresence>
-      {/* 
-        SINGLE UNIFIED ASSEMBLY:
-        The top-0 anchor handles the pendulum swing for both the rope line AND Spidey together.
-      */}
       <motion.div 
         initial={{ opacity: 0, y: -100 }}
         animate={{ 
           opacity: 1, 
           y: 0,
-          rotate: isTickled ? [-12, 12, -12, 12, 0] : [-9, 9, -9] // Whole assembly swings as one
+          rotate: isTickled ? [-12, 12, -12, 12, 0] : [-9, 9, -9] 
         }}
         exit={{ opacity: 0, y: -100 }}
         transition={{ 
@@ -121,11 +119,7 @@ const SpideyHanging = ({ stage, isProjectClicked, isCertificateClicked }: Spidey
           className="w-0.5 bg-cyan-400 shadow-[0_0_12px_#00f2ff]" 
         />
 
-        {/* 
-          SPIDEY CONTAINER:
-          Positioned with negative top margin (-mt-20 to -mt-24) so the rope ends
-          right in the middle portion of Spidey's body/head area.
-        */}
+        {/* SPIDEY CONTAINER */}
         <div 
           className="relative cursor-pointer hover:scale-105 transition-transform flex flex-col items-center group -mt-20 md:-mt-24 z-10"
           onClick={handleRobotClick}
